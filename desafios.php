@@ -1,14 +1,16 @@
 <?php
 
-    $nota1 = 6.0;
-    $nota2 = 5.0;
-    $nota3 = 7.0;
-    $media = ($nota1 + $nota2 + $nota3) / 3;
+    $valor = 7;
+    $soma = 0;
 
-    if($media == 7.0){
-        echo("Você Passou de ano! Sua nota é: " . " " . $media);
-    } else {
-        echo("Reprovado! Sua nota foi: " . " " . $media);
+    echo "Tabuada do 7:<br>";
+
+    for ($i = 1; $i <= 10; $i++){
+        $resultado = $i * $valor;
+        echo "$i x 7 = " . $resultado . "<br>";
+        $soma += $resultado;
     }
+
+    echo "A soma de todos os resultados da tabela: $soma";
 
 ?>
