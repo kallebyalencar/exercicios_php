@@ -15,34 +15,41 @@ if(isset($_POST['enviar-formulario'])){
         "jpeg",
         "jpg",
         "gif",
-        "pdf"
+        "pdf", 
     ];
-    $extensao = pathinfo($_FILES['arquivo']['name'],PATHINFO_EXTENSION); // Aqui você pega a extensão do arquivo enviado. Especificando o nome do input e o índice. PATHINFO_EXTENSION é justamente para pegar apenas a extensão.
 
-    if(in_array($extensao, $formatos_permitidos)){ // Verifica se a extensão do arquivo está dentro da lista permitida.
-        $pasta = "arquivos/"; // Define a pasta onde o arquivo será salvo.
-        $temporario = $_FILES['arquivo']['tmp_name']; // Essa variável guarda o caminho temporário "tmp_name" do arquivo no servidor.
-        $novoNome = uniqid() . ".$extensao"; // Cria um novo nome único para o arquivo, evitando sobreposição. ex: 64f1a2c3d9 Depois concatena com a extensão (.png, .jpg, etc.).
+    $quantidade_arquivos = count($_FILES['arquivo']['name']); // quantos arquivos temos na superglobal FILES
+    $contador = 0; // repetições nesse loop
 
-        if(move_uploaded_file($temporario, $pasta.$novoNome)){ // mover o arquivo temporário para pasta, junto com o novo nome
-            $mensagem = "Upload feito com sucesso!";
+    while($contador < $quantidade_arquivos){ // enquanto contador 0 < arquivos vai repetir isso 👇
+    
+    $extensao = pathinfo($_FILES['arquivo']['name'][$contador],PATHINFO_EXTENSION); // adicionado contador
+
+    if(in_array($extensao, $formatos_permitidos)){ 
+        $pasta = "arquivos/";
+        $temporario = $_FILES['arquivo']['tmp_name'][$contador]; // adicionado contador
+        $novoNome = uniqid() . ".$extensao"; 
+
+        if(move_uploaded_file($temporario, $pasta.$novoNome)){ 
+            echo "Upload feito com sucesso para $pasta$novoNome<br>";
         }else {
-            echo $mensagem = "Erro! Não foi possível fazer upload";
+            echo "Erro ao enviar o arquivo temporário $temporario";
         }
 
     }else {
-        $mensagem = "Formato Inválido";
+        echo "$extensao não é permitida <br>";
     }
 
-    echo $mensagem;
+    $contador++;
 
+    }
 }
 
 ?>
     
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data"> <!--o formulário “se envia para ele mesmo”, e você pode tratar os dados no mesmo script. multipart/form-data Significa que os dados do formulário serão enviados em partes separadas (multipart), permitindo enviar textos e arquivos juntos.-->
+<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data"> 
 
-    <input type="file" name="arquivo" id="iarquivo"> <br>
+    <input type="file" name="arquivo[]" id="iarquivo" multiple> <br> <!--Multiple: selecionar mais de um arquivo / e precisa ser array -->
     <input type="submit" name="enviar-formulario" value="Enviar">
 
 </form>
