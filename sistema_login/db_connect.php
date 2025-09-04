@@ -4,7 +4,7 @@
 $host = "localhost";         // Endereço do servidor
 $username = "postgres";       // Nome do usuário do PostgreSQL
 $password = "Arrozcomfeij@o123"; // Senha do usuário
-$db_name = "sistema_login";  // Nome do banco de dados
+$db_name = "teste";  // Nome do banco de dados
 
 // Criar string de conexão
 $conn_string = "host=$host dbname=$db_name user=$username password=$password";
@@ -17,5 +17,8 @@ if (!$connect) {
     die("Falha na conexão: não foi possível conectar ao PostgreSQL");
 } else {
     echo "Conexão realizada com sucesso!";
+    $result = pg_query($connect, 'SELECT * FROM public."user"');
 }
+
+
 ?>
